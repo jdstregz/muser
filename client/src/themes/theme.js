@@ -18,7 +18,7 @@ const theme = responsiveFontSizes(
       },
       secondary: {
         dark: '#fc8410',
-        main: '#4b484a',
+        main: '#0e103a',
         lighteh: '#ffc62a',
         lighter: '#ffde33',
         light: '#f8e82d',
@@ -29,13 +29,13 @@ const theme = responsiveFontSizes(
         basicallyWhite: '#fffee7',
       },
       background: {
-        main: '#292929',
+        main: '#0f1033',
         light: '#4a4a4a',
-        dark: '#141414',
+        dark: '#270067',
         white: '#ffffff',
         medium: '#474747',
         darkish: '#333333',
-        drawer: '#1a1a1a',
+        drawer: '#1e0063',
       },
       accent: {
         light: '#00f2ea',

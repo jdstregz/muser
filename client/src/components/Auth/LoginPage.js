@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import useStyles from './styles/LoginPage.styles';
 import { startSession, signupRequest } from '../../actions/authActions';
 import { Paper, Grid, Typography, TextField, Button, FormHelperText } from '@material-ui/core';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/MuserIcon.png';
 
 const LoginPage = props => {
   const classes = useStyles();
@@ -91,7 +91,7 @@ const LoginPage = props => {
   });
 
   const headerTitle = () => {
-    return <Typography variant={'h5'}>Dashr</Typography>;
+    return <Typography variant={'h5'}>Muser</Typography>;
   };
 
   const signupLoginText = () => {

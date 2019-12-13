@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     color: '#f73392',
   },
   logo: {
-    height: 100,
+    width: 200,
     marginTop: theme.spacing(2),
     marginBottom: theme.spacing(1),
     textAlign: 'center',
@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     color: '#f50c00',
   },
   loginButton: {
-    backgroundColor: '#f50c00',
+    backgroundColor: '#ff2397',
     fontWeight: '600',
   },
   buttonContainer: {

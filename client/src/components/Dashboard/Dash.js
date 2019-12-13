@@ -15,7 +15,7 @@ import {
 } from '@material-ui/core';
 import { AccountCircle, Menu as MenuIcon } from '@material-ui/icons';
 import { destroySession } from '../../actions/authActions';
-import logo from '../../assets/logo.png';
+import logo from '../../assets/MuserIcon.png';
 import DashDrawer from './DashDrawer';
 import DashRoutes from './DashRoutes';
 import { Link } from 'react-router-dom';
@@ -70,7 +70,7 @@ const Dash = props => {
             </IconButton>
           ) : null}
           <img alt={'logo'} src={logo} className={classes.logo} />
-          <Typography className={classes.title}>Dashr</Typography>
+          <Typography className={classes.title}>Muser</Typography>
           <IconButton style={{ color: '#fff' }} onClick={handleProfileMenuOpen}>
             <AccountCircle />
           </IconButton>
