@@ -1,9 +1,11 @@
 import React from 'react';
 import { Grid, Typography, Divider, Paper, Button } from '@material-ui/core';
+import { connect } from 'react-redux';
 import useStyles from './styles/Settings.style';
 
 const Settings = props => {
   const classes = useStyles();
+  const {spotify} = props;
 
   return (
     <Grid container spacing={1} justify={'center'} alignItems={'center'}>
@@ -20,7 +22,11 @@ const Settings = props => {
               <Typography variant={'h6'}>Connection</Typography>
             </Grid>
             <Grid item xs={12}>
-              <Button href={'/auth/spotify/login'}>Log in to spotify</Button>
+              {spotify.spotifySessionActive ?
+              null
+                  :
+                  <Button href={'/auth/spotify/login'}>Log in to spotify</Button>
+              }
             </Grid>
           </Grid>
         </Paper>
@@ -29,4 +35,10 @@ const Settings = props => {
   );
 };
 
-export default Settings;
+const mapStateToProps = state => {
+  return {
+    spotify: state.spotify
+  }
+}
+
+export default connect(mapStateToProps, null)(Settings);

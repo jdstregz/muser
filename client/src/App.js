@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { ThemeProvider } from '@material-ui/styles';
-import { fetchSession } from './actions/authActions';
+import { fetchSession, fetchSpotifySession } from './actions/authActions';
 import PropTypes from 'prop-types';
 import theme from './themes/theme';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
@@ -11,9 +11,10 @@ import { SnackbarProvider } from 'notistack';
 import { Helmet } from 'react-helmet';
 
 const App = props => {
-  const { fetchSession } = props;
+  const { fetchSession, fetchSpotifySession } = props;
   useEffect(() => {
     fetchSession();
+    fetchSpotifySession();
   }, [fetchSession]);
 
   return (
@@ -51,4 +52,4 @@ App.propTypes = {
   fetchSession: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, { fetchSession })(App);
+export default connect(mapStateToProps, { fetchSession, fetchSpotifySession })(App);
