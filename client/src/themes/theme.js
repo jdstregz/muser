@@ -57,9 +57,7 @@ const theme = responsiveFontSizes(
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
       ].join(','),
-      h6: {
-        fontWeight: 800,
-      },
+      h6: {},
       username: {
         font: 'Roboto',
         fontWeight: 800,

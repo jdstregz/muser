@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const passport = require('passport');
+const cors = require('cors');
 
 const envFile = process.env.NODE_ENV ? `config/.env.${process.env.NODE_ENV}` : 'config/.env';
 environment.config({ path: path.resolve(__dirname, envFile) });
@@ -43,6 +44,7 @@ mongoose
 // https://helmetjs.github.io/docs/
 app.use(helmet());
 app.use(bodyParser.json());
+app.use(cors());
 app.use(
   bodyParser.urlencoded({
     extended: true,

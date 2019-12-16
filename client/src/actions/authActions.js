@@ -19,6 +19,9 @@ export const startSession = (username, password) => async dispatch => {
 };
 
 export const signupRequest = (email, username, password, name) => async () => {
-  console.log('hello');
   return await axios.post('/auth/signup', { email, password, username, name });
+};
+
+export const spotifyLogin = () => {
+  axios.get('/auth/spotify/login');
 };

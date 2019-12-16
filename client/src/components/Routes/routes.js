@@ -2,12 +2,14 @@ import React from 'react';
 import {
   Dashboard,
   Alarm,
-  Link,
   Settings,
-  Router,
-  DataUsageSharp,
+  Group,
   BeachAccess,
+  LibraryMusic,
+  QueueMusic,
 } from '@material-ui/icons';
+
+import SettingsPage from '../Settings/Settings';
 
 const Routes = () => {
   return {
@@ -18,30 +20,30 @@ const Routes = () => {
       description: 'Dashboard for quick profile view and feeds',
     },
     mainRoute: {
-      text: 'Route',
-      link: '/main-route',
-      icon: <Router />,
-      description: 'Main route',
+      text: 'Muse Tools',
+      link: '/muse-tools',
+      icon: <LibraryMusic />,
+      description: 'Muse Tools',
       index: 1,
       subroutes: {
         sub1: {
-          text: 'Subroute 1',
-          link: '/sub-1',
-          icon: <DataUsageSharp />,
+          text: 'Playlist Tools',
+          link: '/playlist-tools',
+          icon: <QueueMusic />,
           description: 'This is subroute 1',
         },
         sub2: {
-          text: 'sub-2',
+          text: 'Other',
           link: '/sub-2',
-          icon: <Link />,
+          icon: <BeachAccess />,
           description: 'This is subroute 2',
         },
       },
     },
     analytics: {
-      text: 'Analytics',
-      link: '/analytics',
-      icon: <BeachAccess />,
+      text: 'Friends',
+      link: '/friends',
+      icon: <Group />,
       description: 'An example analytics route',
     },
     idk: {
@@ -50,10 +52,11 @@ const Routes = () => {
       icon: <Alarm />,
       description: 'Something',
     },
-    profile: {
+    settings: {
       text: 'Settings',
       link: '/settings',
       icon: <Settings />,
+      render: () => <SettingsPage />,
       description: 'Profile settings',
     },
   };
