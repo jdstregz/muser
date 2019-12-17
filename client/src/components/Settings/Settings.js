@@ -5,7 +5,7 @@ import useStyles from './styles/Settings.style';
 
 const Settings = props => {
   const classes = useStyles();
-  const {spotify} = props;
+  const { spotify } = props;
 
   return (
     <Grid container spacing={1} justify={'center'} alignItems={'center'}>
@@ -22,11 +22,13 @@ const Settings = props => {
               <Typography variant={'h6'}>Connection</Typography>
             </Grid>
             <Grid item xs={12}>
-              {spotify.spotifySessionActive ?
-              null
-                  :
-                  <Button href={'/auth/spotify/login'}>Log in to spotify</Button>
-              }
+              {spotify.spotifySessionActive ? (
+                <Paper style={{ color: '#06ae0c' }}>
+                  <Typography variant={'body1'}>Spotify Connection: Active</Typography>
+                </Paper>
+              ) : (
+                <Button href={'/auth/spotify/login'}>Log in to spotify</Button>
+              )}
             </Grid>
           </Grid>
         </Paper>
@@ -37,8 +39,8 @@ const Settings = props => {
 
 const mapStateToProps = state => {
   return {
-    spotify: state.spotify
-  }
-}
+    spotify: state.spotify,
+  };
+};
 
 export default connect(mapStateToProps, null)(Settings);

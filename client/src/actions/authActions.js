@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import {FETCH_SESSION, DESTROY_SESSION, FETCH_SPOTIFY_SESSION} from './types';
+import { FETCH_SESSION, DESTROY_SESSION, FETCH_SPOTIFY_SESSION } from './types';
 
 export const fetchSession = () => async dispatch => {
   const res = await axios.get('/auth/current-session');
@@ -27,6 +27,7 @@ export const spotifyLogin = () => {
 };
 
 export const fetchSpotifySession = () => async dispatch => {
-  const {data} = await axios.get('/current-spotify-session');
+  const { data } = await axios.get('/auth/current-spotify-session');
   dispatch({ type: FETCH_SPOTIFY_SESSION, payload: data });
+  return data;
 };

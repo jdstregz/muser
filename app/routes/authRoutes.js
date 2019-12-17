@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const request = require('request');
 const querystring = require('querystring');
+const axios = require('axios');
 const logger = require('../config/winston');
 
 const jwtRequired = passport.authenticate('jwt', { session: false });
@@ -123,12 +124,22 @@ router.get('/spotify/callback', (req, res) => {
   }
 });
 
-router.get('/current-spotify-session', (req, res) => {
-  jwt.verify(req.session.spotifyJWT, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
+router.get('/current-spotify-session', async (req, res) => {
+  jwt.verify(req.session.spotifyJWT, process.env.JWT_SECRET_KEY, async (err, decodedToken) => {
     if (err || !decodedToken) {
-      res.send(null);
+      res.send(false);
     } else {
-      res.send(decodedToken);
+      try {
+        const { data } = await axios.get('https://api.spotify.com/v1/me', {
+          headers: {
+            Authorization: `Bearer ${decodedToken.accessToken}`,
+          },
+        });
+        res.send(data);
+      } catch (error) {
+        logger.error(error);
+        res.send(false);
+      }
     }
   });
 });

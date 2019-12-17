@@ -12,10 +12,11 @@ import { Helmet } from 'react-helmet';
 
 const App = props => {
   const { fetchSession, fetchSpotifySession } = props;
+
   useEffect(() => {
     fetchSession();
     fetchSpotifySession();
-  }, [fetchSession]);
+  }, [fetchSpotifySession, fetchSession]);
 
   return (
     <div>

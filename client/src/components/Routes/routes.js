@@ -1,15 +1,19 @@
 import React from 'react';
 import {
   Dashboard,
-  Alarm,
+  AccountCircleOutlined,
   Settings,
   Group,
   BeachAccess,
   LibraryMusic,
+  Search,
+  Home,
+  Queue,
   QueueMusic,
 } from '@material-ui/icons';
 
 import SettingsPage from '../Settings/Settings';
+import Profile from '../Profile/Profile';
 
 const Routes = () => {
   return {
@@ -26,17 +30,29 @@ const Routes = () => {
       description: 'Muse Tools',
       index: 1,
       subroutes: {
-        sub1: {
+        library: {
+          text: 'Library',
+          link: '/library',
+          icon: <Home />,
+          description: 'Current users library',
+        },
+        search: {
+          text: 'Search',
+          link: '/search',
+          icon: <Search />,
+          description: 'Search for music',
+        },
+        playlistTools: {
           text: 'Playlist Tools',
           link: '/playlist-tools',
           icon: <QueueMusic />,
           description: 'This is subroute 1',
         },
-        sub2: {
-          text: 'Other',
-          link: '/sub-2',
-          icon: <BeachAccess />,
-          description: 'This is subroute 2',
+        groupListening: {
+          text: 'Group Listening',
+          link: '/group-listening',
+          icon: <Queue />,
+          description: 'Group listening feature',
         },
       },
     },
@@ -46,11 +62,12 @@ const Routes = () => {
       icon: <Group />,
       description: 'An example analytics route',
     },
-    idk: {
-      text: 'I dunno',
-      link: '/i-d-k',
-      icon: <Alarm />,
-      description: 'Something',
+    profile: {
+      text: 'Profile',
+      link: '/profile',
+      icon: <AccountCircleOutlined />,
+      render: () => <Profile />,
+      description: 'Profile',
     },
     settings: {
       text: 'Settings',
@@ -58,6 +75,12 @@ const Routes = () => {
       icon: <Settings />,
       render: () => <SettingsPage />,
       description: 'Profile settings',
+    },
+    about: {
+      text: 'About',
+      link: '/about',
+      icon: <BeachAccess />,
+      description: 'About page',
     },
   };
 };

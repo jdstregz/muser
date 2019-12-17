@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
+import { Redirect, withRouter } from 'react-router';
 import SecuredRoute from '../Auth/SecuredRoute';
 import useStyles from './styles/Dash.styles';
 import {
@@ -22,7 +22,7 @@ import { Link } from 'react-router-dom';
 
 const Dash = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { destroySession, history } = props;
+  const { destroySession, history, spotify } = props;
   const isMenuOpen = Boolean(anchorEl);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const theme = useTheme();
@@ -55,6 +55,10 @@ const Dash = props => {
       <MenuItem onClick={handleLogout}>Logout</MenuItem>
     </Menu>
   );
+
+  if (spotify && spotify.spotifySessionActive === false) {
+    return <Redirect to={'/auth/spotify/login'} />;
+  }
 
   return (
     <div className={classes.root}>
@@ -89,6 +93,7 @@ const Dash = props => {
 function mapStateToProps(state) {
   return {
     auth: state.auth,
+    spotify: state.spotify,
   };
 }
 
