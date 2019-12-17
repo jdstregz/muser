@@ -9,6 +9,7 @@ import LoginPage from './components/Auth/LoginPage';
 import Dash from './components/Dashboard/Dash';
 import { SnackbarProvider } from 'notistack';
 import { Helmet } from 'react-helmet';
+import config from './config/config';
 
 const App = props => {
   const { fetchSession, fetchSpotifySession } = props;
@@ -33,6 +34,15 @@ const App = props => {
           <BrowserRouter>
             <Switch>
               <Route exact path={'/login'} component={LoginPage} />
+              <Route
+                exact
+                path={'/spotify-login'}
+                component={() => {
+                  window.location.href = `${config.api.url}/auth/spotify/login`;
+                  return null;
+                }}
+              />
+              ;
               <Route path={'/'} component={Dash} />
             </Switch>
           </BrowserRouter>

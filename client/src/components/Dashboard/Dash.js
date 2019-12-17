@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect, withRouter } from 'react-router';
+import { Redirect, Route, withRouter } from 'react-router';
 import SecuredRoute from '../Auth/SecuredRoute';
 import useStyles from './styles/Dash.styles';
 import {
@@ -19,6 +19,7 @@ import logo from '../../assets/MuserIcon.png';
 import DashDrawer from './DashDrawer';
 import DashRoutes from './DashRoutes';
 import { Link } from 'react-router-dom';
+import config from '../../config/config';
 
 const Dash = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -57,7 +58,10 @@ const Dash = props => {
   );
 
   if (spotify && spotify.spotifySessionActive === false) {
-    return <Redirect to={'/auth/spotify/login'} />;
+    if (config && config.api && config.api.url) {
+      history.push('/spotify-login');
+      return null;
+    }
   }
 
   return (

@@ -51,7 +51,11 @@ const LoginPage = props => {
     }
     setRequestSent(true);
     try {
-      await signupRequest(email, username, password, name);
+      const { data } = await signupRequest(email, username, password, name);
+      if (data) {
+        switchForm();
+        setSuccessText('Signup Successful! Please log in');
+      }
       setRequestSent(false);
     } catch (err) {
       setErrorText(err.message);
@@ -209,7 +213,7 @@ const LoginPage = props => {
               ) : null}
             </div>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} style={{ textAlign: 'center' }}>
             <Typography className={classes.successText}>{successText}</Typography>
             <Typography className={classes.errorText}>{errorText}</Typography>
           </Grid>

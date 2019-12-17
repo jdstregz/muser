@@ -9,8 +9,10 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const cors = require('cors');
 
-const envFile = process.env.NODE_ENV ? `config/.env.${process.env.NODE_ENV}` : 'config/.env';
-environment.config({ path: path.resolve(__dirname, envFile) });
+if (process.env.NODE_ENV !== 'production') {
+  const envFile = process.env.NODE_ENV ? `config/.env.${process.env.NODE_ENV}` : 'config/.env';
+  environment.config({ path: path.resolve(__dirname, envFile) });
+}
 
 const logger = require('./config/winston');
 

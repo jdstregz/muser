@@ -14,6 +14,8 @@ import {
 
 import SettingsPage from '../Settings/Settings';
 import Profile from '../Profile/Profile';
+import Friends from '../Friends/Friends';
+import About from '../About/About';
 
 const Routes = () => {
   return {
@@ -60,6 +62,7 @@ const Routes = () => {
       text: 'Friends',
       link: '/friends',
       icon: <Group />,
+      render: () => <Friends />,
       description: 'An example analytics route',
     },
     profile: {
@@ -80,6 +83,7 @@ const Routes = () => {
       text: 'About',
       link: '/about',
       icon: <BeachAccess />,
+      render: () => <About />,
       description: 'About page',
     },
   };

@@ -12,7 +12,8 @@
     "view-coverage": "opener ./coverage/index.html",
     "client": "npm run start --prefix client",
     "both": "concurrently \"npm run debug\" \"npm run client\"",
-    "build": "npm install && cd client && npm install && npm run build"
+    "build": "npm install && cd client && npm install && npm run build",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "husky": {
     "hooks": {
