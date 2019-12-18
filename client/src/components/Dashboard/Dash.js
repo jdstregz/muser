@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Redirect, Route, withRouter } from 'react-router';
+import { withRouter } from 'react-router';
 import SecuredRoute from '../Auth/SecuredRoute';
 import useStyles from './styles/Dash.styles';
 import {
@@ -20,6 +20,7 @@ import DashDrawer from './DashDrawer';
 import DashRoutes from './DashRoutes';
 import { Link } from 'react-router-dom';
 import config from '../../config/config';
+import SpotifyWebPlayer from 'react-spotify-web-playback';
 
 const Dash = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -57,12 +58,36 @@ const Dash = props => {
     </Menu>
   );
 
-  if (spotify && spotify.spotifySessionActive === false) {
+  if (spotify === false || (spotify && spotify.spotifySessionActive === false)) {
     if (config && config.api && config.api.url) {
       history.push('/spotify-login');
       return null;
     }
   }
+
+  const runSpotifyPlayer = () => {
+    if (spotify && spotify.spotifySessionActive && spotify.spotifySessionActive.token) {
+      return (
+        <SpotifyWebPlayer
+          token={spotify.spotifySessionActive.token}
+          styles={{
+            bgColor: '#0e103a',
+            trackNameColor: '#fff',
+            trackArtistColor: '#d2d2d2',
+            savedColor: '#e52ac9',
+            sliderColor: '#28c0c9',
+            sliderHandleColor: '#fbba48',
+            sliderTrackColor: '#9b9b9b',
+            color: '#fff',
+          }}
+          showSaveIcon={true}
+          magnifySliderOnHover={true}
+          persistDeviceSelection={true}
+          name={'Muser Player'}
+        />
+      );
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -90,6 +115,7 @@ const Dash = props => {
         <div className={classes.toolbar} />
         <DashRoutes />
       </main>
+      <div className={classes.player}>{runSpotifyPlayer()}</div>
     </div>
   );
 };

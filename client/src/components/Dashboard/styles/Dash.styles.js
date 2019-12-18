@@ -26,6 +26,13 @@ const useStyles = makeStyles(theme => ({
     borderColor: '#919191',
   },
   toolbar: theme.mixins.toolbar,
+  player: {
+    position: 'fixed',
+    left: 0,
+    bottom: 0,
+    width: '100%',
+    zIndex: 10000,
+  },
 }));
 
 export default useStyles;

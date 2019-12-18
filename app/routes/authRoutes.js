@@ -66,7 +66,8 @@ const generateRandomString = length => {
 };
 
 router.get('/spotify/login', (req, res) => {
-  const scope = 'user-read-private user-read-email';
+  let scope = 'user-read-private user-read-email streaming user-read-playback-state ';
+  scope += 'user-modify-playback-state user-library-read user-library-modify';
   const state = generateRandomString(16);
   req.session.state = state;
   res.redirect(
@@ -135,7 +136,10 @@ router.get('/current-spotify-session', async (req, res) => {
             Authorization: `Bearer ${decodedToken.accessToken}`,
           },
         });
-        res.send(data);
+        res.send({
+          token: decodedToken.accessToken,
+          ...data,
+        });
       } catch (error) {
         logger.error(error);
         res.send(false);

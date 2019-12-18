@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Typography, Divider } from '@material-ui/core';
+
 const About = () => {
   return (
     <Grid container spacing={1} justify={'center'} alignItems={'center'}>
