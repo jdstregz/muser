@@ -61,7 +61,6 @@ const About = () => {
         <Typography style={{ color: '#b4b4b4' }}>
           TODO - Allow users to enter a chatroom together and listen to music at the same time
         </Typography>
-
         <Divider variant={'middle'} style={{ margin: 8, backgroundColor: '#fff' }} />
       </Grid>
       <Grid item xs={12}>

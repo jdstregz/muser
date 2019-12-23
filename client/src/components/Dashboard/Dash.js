@@ -21,10 +21,18 @@ import DashRoutes from './DashRoutes';
 import { Link } from 'react-router-dom';
 import config from '../../config/config';
 import SpotifyWebPlayer from 'react-spotify-web-playback';
+import { getIncomingFriendRequests, getOutgoingFriendRequests } from '../../actions/userActions';
 
 const Dash = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { destroySession, history, spotify } = props;
+  const {
+    destroySession,
+    history,
+    spotify,
+    requests,
+    getIncomingFriendRequests,
+    getOutgoingFriendRequests,
+  } = props;
   const isMenuOpen = Boolean(anchorEl);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const theme = useTheme();
@@ -42,6 +50,11 @@ const Dash = props => {
   const handleLogout = () => {
     destroySession(history);
   };
+
+  React.useEffect(() => {
+    getOutgoingFriendRequests();
+    getIncomingFriendRequests();
+  }, [getIncomingFriendRequests, getOutgoingFriendRequests]);
 
   const profileMenu = (
     <Menu
@@ -129,7 +142,12 @@ function mapStateToProps(state) {
   return {
     auth: state.auth,
     spotify: state.spotify,
+    requests: state.requests,
   };
 }
 
-export default connect(mapStateToProps, { destroySession })(withRouter(SecuredRoute(Dash)));
+export default connect(mapStateToProps, {
+  destroySession,
+  getIncomingFriendRequests,
+  getOutgoingFriendRequests,
+})(withRouter(SecuredRoute(Dash)));

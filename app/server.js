@@ -18,6 +18,7 @@ const logger = require('./config/winston');
 
 // Models
 require('./models/User');
+require('./models/FriendConnect');
 
 // Services
 require('./services/passport');

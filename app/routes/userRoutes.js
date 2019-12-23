@@ -9,4 +9,9 @@ const router = express.Router();
 router.get('/my/friends', jwtRequired, UserController.getUserFriends);
 // api/users/search/friends
 router.post('/search/friends', jwtRequired, UserController.searchUsersForUsername);
+router.get('/incoming-friend-requests', jwtRequired, UserController.getIncomingFriendRequests);
+router.get('/outgoing-friend-requests', jwtRequired, UserController.getOutgoingFriendRequests);
+
+router.post('/outgoing-friend-requests', jwtRequired, UserController.sendFriendRequest);
+
 module.exports = router;
