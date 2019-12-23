@@ -16,6 +16,9 @@ import SettingsPage from '../Settings/Settings';
 import Profile from '../Profile/Profile';
 import Friends from '../Friends/Friends';
 import About from '../About/About';
+import Library from '../Library/Library';
+import SearchPage from '../Search/Search';
+import DashboardPage from '../Dashboard/DashboardPage';
 
 const Routes = () => {
   return {
@@ -23,6 +26,7 @@ const Routes = () => {
       text: 'Dashboard',
       link: '/dashboard',
       icon: <Dashboard />,
+      render: () => <DashboardPage />,
       description: 'Dashboard for quick profile view and feeds',
     },
     mainRoute: {
@@ -36,12 +40,14 @@ const Routes = () => {
           text: 'Library',
           link: '/library',
           icon: <Home />,
+          render: () => <Library />,
           description: 'Current users library',
         },
         search: {
           text: 'Search',
           link: '/search',
           icon: <Search />,
+          render: () => <SearchPage />,
           description: 'Search for music',
         },
         playlistTools: {

@@ -78,8 +78,10 @@ app.use(morgan(morganFormat, { stream: process.stdout }));
 app.use(passport.initialize());
 
 const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 app.use('/auth', authRoutes);
+app.use('/api/user', userRoutes);
 
 const PORT = process.env.PORT || 8090;
 app.listen(PORT, () => {

@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const FriendConnectSchema = new Schema({
-  user: { type: Schema.Types.ObjectId, ref: 'User' },
-  friend: { type: Schema.Types.ObjectId, ref: 'User' },
+const FriendRequestSchema = new Schema({
+  sender: { type: Schema.Types.ObjectId, ref: 'User' },
+  receiver: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 
-mongoose.model('Friend', FriendConnectSchema);
+mongoose.model('Friend', FriendRequestSchema);

@@ -65,6 +65,10 @@ const Dash = props => {
     }
   }
 
+  const playerCallback = state => {
+    console.log(state);
+  };
+
   const runSpotifyPlayer = () => {
     if (spotify && spotify.spotifySessionActive && spotify.spotifySessionActive.token) {
       return (
@@ -84,6 +88,7 @@ const Dash = props => {
           magnifySliderOnHover={true}
           persistDeviceSelection={true}
           name={'Muser Player'}
+          callback={playerCallback}
         />
       );
     }
