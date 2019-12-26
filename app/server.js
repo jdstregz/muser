@@ -8,6 +8,7 @@ const helmet = require('helmet');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const cors = require('cors');
+const http = require('http');
 
 if (process.env.NODE_ENV !== 'production') {
   const envFile = process.env.NODE_ENV ? `config/.env.${process.env.NODE_ENV}` : 'config/.env';
@@ -19,6 +20,7 @@ const logger = require('./config/winston');
 // Models
 require('./models/User');
 require('./models/FriendConnect');
+require('./models/GroupListeningRoom');
 
 // Services
 require('./services/passport');
@@ -80,12 +82,16 @@ app.use(passport.initialize());
 
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const groupListeningRoutes = require('./routes/groupListeningRoutes');
 
 app.use('/auth', authRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/gl-rooms', groupListeningRoutes)
 
 const PORT = process.env.PORT || 8090;
-app.listen(PORT, () => {
+
+const server = http.createServer(app)
+server.listen(PORT, () => {
   logger.info(`App listening on port ${PORT}`);
 });
 

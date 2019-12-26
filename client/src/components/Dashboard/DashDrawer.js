@@ -98,7 +98,11 @@ const DashDrawer = props => {
         </IconButton>
       </div>
       <List className={classes.list}>
-        {routeArray.map((route, index) => (
+        {routeArray.map((route, index) => {
+          if (route.hide) {
+            return null;
+          }
+          return (
           <div key={route.text}>
             <Tooltip
               title={route.text}
@@ -121,7 +125,7 @@ const DashDrawer = props => {
             </Tooltip>
             {route.subroutes ? renderSublist(route, index) : null}
           </div>
-        ))}
+        )})}
       </List>
     </Drawer>
   );

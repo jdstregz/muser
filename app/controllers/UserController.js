@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const User = mongoose.model('User');
+const Friend = mongoose.model('Friend');
 const FriendRequest = mongoose.model('FriendRequest');
 
 const logger = require('../config/winston');
@@ -72,6 +73,7 @@ exports.sendFriendRequest = async (req, res) => {
         },
       ],
     });
+    // TODO: write logic to check if either are already friend with eachother
     if (existingRequest) {
       return res.status(409).send({
         message: 'Friend request already exists',
@@ -115,3 +117,58 @@ exports.searchUsersForUsername = async (req, res) => {
     return res.send('An error occurred');
   }
 };
+
+exports.acceptFriendRequest = async (req, res) => {
+  try {
+    if (!req.user || !req.user._id ||
+      !req.body.sender || !req.body.receiver) {
+      return res.status(400).send({
+        message: 'Bad Request'
+      })
+    }
+
+    const existingRequest = await FriendRequest.findOne({
+      receiver: req.user._id,
+      sender: req.body.sender,
+      _id: req.body._id
+    });
+
+    if (existingRequest) {
+
+      const user1 = await User.findOne({
+        _id: existingRequest.receiver
+      });
+      const user2 = await User.findOne({
+        _id: existingRequest.sender
+      })
+      user1.friends.push(new Friend({
+        userId: existingRequest.sender,
+        username: existingRequest.senderName,
+        bestFriend: false,
+      }));
+
+      user2.friends.push(new Friend({
+        userId: existingRequest.receiver,
+        username: existingRequest.receiverName,
+        bestFriend: false
+      }))
+
+      await user1.save();
+      await user2.save();
+
+      await FriendRequest.deleteOne({
+        receiver: req.user._id,
+        sender: req.body.sender,
+        _id: req.body._id
+      });
+
+      return res.send(user1.friends);
+    }
+
+  } catch (err) {
+    logger.error(err);
+    return res.status(500).send({
+      message: "An error occurred"
+    });
+  }
+}

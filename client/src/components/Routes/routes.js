@@ -19,6 +19,9 @@ import About from '../About/About';
 import Library from '../Library/Library';
 import SearchPage from '../Search/Search';
 import DashboardPage from '../Dashboard/DashboardPage';
+import GroupListeningLanding from '../GroupListening/GroupListeningLanding';
+import CreateGLRoom from '../GroupListening/CreateGLRoom';
+import GLRoom from '../GroupListening/GLRoom';
 
 const Routes = () => {
   return {
@@ -59,6 +62,7 @@ const Routes = () => {
         groupListening: {
           text: 'Group Listening',
           link: '/group-listening',
+          render: () => <GroupListeningLanding/>,
           icon: <Queue />,
           description: 'Group listening feature',
         },
@@ -92,6 +96,21 @@ const Routes = () => {
       render: () => <About />,
       description: 'About page',
     },
+    /////////////// HIDDEN ROUTES (NON-SIDEBAR-ROUTES)
+    createGLRoom: {
+      text: 'CreateGLRoom,',
+      link: '/create-gl-room',
+      render: () => <CreateGLRoom/>,
+      hide: true,
+      description: 'Page to create a group listening room'
+    },
+    GLRoom: {
+      text: 'GLRoom',
+      link: '/gl-room',
+      render: () => <GLRoom/>,
+      hide: true,
+      description: 'Page to do the group listening'
+    }
   };
 };
 export default Routes;

@@ -5,6 +5,7 @@ const { Schema } = mongoose;
 
 const FriendSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  username: String,
   bestFriend: Boolean,
 });
 

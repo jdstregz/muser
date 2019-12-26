@@ -7,16 +7,17 @@ import {
   ListItem,
   List,
 } from '@material-ui/core';
-import { Cancel } from '@material-ui/icons';
+import { Cancel, Check } from '@material-ui/icons';
 import Typography from '@material-ui/core/Typography';
 import { fetchSession } from '../../actions/authActions';
+import { getUserFriends, acceptFriendRequest } from '../../actions/userActions';
 import { connect } from 'react-redux';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import FriendList from './FriendList';
 
 const Friends = props => {
-  const { auth, fetchSession, requests } = props;
+  const { auth, fetchSession, getUserFriends, requests, user, acceptFriendRequest } = props;
   const [friendSearch, setFriendSearch] = React.useState('');
   const [friendResults, setFriendResults] = React.useState([]);
   const [searchLoading, setSearchLoading] = React.useState(false);
@@ -27,6 +28,7 @@ const Friends = props => {
 
   React.useEffect(() => {
     fetchSession();
+    getUserFriends();
   }, [fetchSession]);
 
   const searchForUsers = async username => {
@@ -35,6 +37,10 @@ const Friends = props => {
     const { data } = await axios.post('/api/user/search/friends', { search: username });
     setFriendResults(data);
     setSearchLoading(false);
+  };
+
+  const acceptRequest = async request => {
+    await acceptFriendRequest(request);
   };
 
   return (
@@ -47,9 +53,13 @@ const Friends = props => {
       <Grid item xs={12} sm={6}>
         <Grid container spacing={1} justify={'center'} alignItems={'center'}>
           <Grid item xs={12}>
-            {auth && auth.friends ? (
-              auth.friends
-            ) : (
+            {user && user.friends ?
+              user.friends.map(friend => (
+                <Typography style={{color: '#fff'}}>
+                  {friend.username}
+                </Typography>
+              ))
+             : (
               <Typography style={{ color: '#fff' }}>No friends</Typography>
             )}
           </Grid>
@@ -60,8 +70,8 @@ const Friends = props => {
             {outgoingRequests && outgoingRequests.length > 0 ? (
               <List style={{ backgroundColor: '#fff', borderRadius: 10 }}>
                 {outgoingRequests.map(request => (
-                  <ListItem>
-                    <ListItemText primary={request.receiver} />
+                  <ListItem key={request._id}>
+                    <ListItemText primary={request.receiverName} />
                     <ListItemSecondaryAction>
                       <IconButton>
                         <Cancel />
@@ -81,9 +91,12 @@ const Friends = props => {
             {incomingRequests && incomingRequests.length > 0 ? (
               <List style={{ backgroundColor: '#fff', borderRadius: 10 }}>
                 {incomingRequests.map(request => (
-                  <ListItem>
-                    <ListItemText primary={request.receiver} />
+                  <ListItem key={request._id}>
+                    <ListItemText primary={request.senderName} />
                     <ListItemSecondaryAction>
+                      <IconButton onClick={() => acceptRequest(request)}>
+                        <Check/>
+                      </IconButton>
                       <IconButton>
                         <Cancel />
                       </IconButton>
@@ -123,7 +136,7 @@ const Friends = props => {
                 you={auth}
                 outgoingRequests={outgoingRequests}
                 incomingRequests={incomingRequests}
-                currentFriends={auth.friends}
+                currentFriends={user && user.friends ? user.friends : []}
                 results={friendResults}
               />
             ) : (
@@ -142,7 +155,8 @@ const mapStateToProps = state => {
   return {
     auth: state.auth,
     requests: state.requests,
+    user: state.user
   };
 };
 
-export default connect(mapStateToProps, { fetchSession })(Friends);
+export default connect(mapStateToProps, { fetchSession, getUserFriends, acceptFriendRequest })(Friends);
