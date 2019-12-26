@@ -1,11 +1,10 @@
-const express = require('express');
+const io = require('socket.io');
 
-
-const GroupListeningController = require('../controllers/GroupListeningController');
-
-router.post('/create', jwtRequired, GroupListeningController.createGroupListeningRoom);
-router.get('/:id', jwtRequired, GroupListeningController.getGroupListeningRoomById);
-
-module.exports = app => {
-
+module.exports = server => {
+  const chatSocket = io(server);
+  chatSocket.onconnection(socket => {
+    socket.emit('test', data => {
+      console.log(data);
+    });
+  });
 };

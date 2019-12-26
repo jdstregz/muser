@@ -86,13 +86,15 @@ const groupListeningRoutes = require('./routes/groupListeningRoutes');
 
 app.use('/auth', authRoutes);
 app.use('/api/user', userRoutes);
-app.use('/api/gl-rooms', groupListeningRoutes)
+app.use('/api/gl-rooms', groupListeningRoutes);
 
 const PORT = process.env.PORT || 8090;
 
-const server = http.createServer(app)
+const server = http.createServer(app);
 server.listen(PORT, () => {
   logger.info(`App listening on port ${PORT}`);
 });
+
+require('./services/chatEngine')(server);
 
 module.exports = app;
