@@ -22,6 +22,7 @@ import { Link } from 'react-router-dom';
 import config from '../../config/config';
 import SpotifyWebPlayer from 'react-spotify-web-playback';
 import { getIncomingFriendRequests, getOutgoingFriendRequests } from '../../actions/userActions';
+import {socketConnect} from '../../actions/socketActions';
 
 const Dash = props => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -32,6 +33,7 @@ const Dash = props => {
     requests,
     getIncomingFriendRequests,
     getOutgoingFriendRequests,
+    socketConnect
   } = props;
   const isMenuOpen = Boolean(anchorEl);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -54,6 +56,7 @@ const Dash = props => {
   React.useEffect(() => {
     getOutgoingFriendRequests();
     getIncomingFriendRequests();
+    socketConnect();
   }, [getIncomingFriendRequests, getOutgoingFriendRequests]);
 
   const profileMenu = (
@@ -150,4 +153,5 @@ export default connect(mapStateToProps, {
   destroySession,
   getIncomingFriendRequests,
   getOutgoingFriendRequests,
+  socketConnect,
 })(withRouter(SecuredRoute(Dash)));

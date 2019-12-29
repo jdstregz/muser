@@ -12,6 +12,7 @@ const CreateGLRoom = props => {
   const [requested, setRequested] = React.useState(false);
   const history = useHistory();
 
+  console.log(publicRoom);
   const validateFields = () => {
     console.log('validating Fields')
     const valids = {}
@@ -100,7 +101,7 @@ const CreateGLRoom = props => {
       <Grid item xs={12}>
         <Typography style={{color: '#fff'}}>
           Public: <Checkbox style={{color: '#fff'}}
-                            onChange={event => setPublicRoom(event.target.value)}
+                            onChange={event => setPublicRoom(event.target.checked)}
                             value={publicRoom}
         />
 

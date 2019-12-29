@@ -2,12 +2,15 @@ import React from 'react';
 import {Grid, Typography} from '@material-ui/core';
 import {useLocation} from 'react-router';
 import {getGroupListeningRoom} from '../../actions/groupListeningActions';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Chat from './Chat';
+import config from '../../config/config';
+import {connect} from 'react-redux';
+import Queue from './Queue';
 
 const GLRoom = props => {
   const [room, setRoom] = React.useState(null);
+  const {socket} = props;
   const location = useLocation();
 
   React.useEffect(() => {
@@ -17,8 +20,13 @@ const GLRoom = props => {
       getGroupListeningRoom(id).then((data) => {
         setRoom(data);
       });
+      if (config && config.api && config.api.url && socket) {
+        socket.emit('joinGLRoom', {id});
+      }
     }
-  }, []);
+  }, [socket]);
+
+
 
   if (!room) {
     return (<CircularProgress/>);
@@ -37,10 +45,19 @@ const GLRoom = props => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <Chat/>
+        <Queue/>
+      </Grid>
+      <Grid item xs={12}>
+        <Chat socket={socket}/>
       </Grid>
     </Grid>
   )
 }
 
-export default GLRoom
+const mapStateToProps = (state) => {
+  return {
+    socket: state.socket,
+  }
+};
+
+export default connect(mapStateToProps, null)(GLRoom)
