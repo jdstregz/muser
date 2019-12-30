@@ -22,6 +22,7 @@ import DashboardPage from '../Dashboard/DashboardPage';
 import GroupListeningLanding from '../GroupListening/GroupListeningLanding';
 import CreateGLRoom from '../GroupListening/CreateGLRoom';
 import GLRoom from '../GroupListening/GLRoom';
+import Albums from '../Library/Albums';
 
 const Routes = () => {
   return {
@@ -110,6 +111,13 @@ const Routes = () => {
       render: () => <GLRoom/>,
       hide: true,
       description: 'Page to do the group listening'
+    },
+    Albums: {
+      text: 'Albums',
+      link: '/albums',
+      render: () => <Albums/>,
+      hide: true,
+      description: "Showing all user saved Albums"
     }
   };
 };

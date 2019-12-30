@@ -1,7 +1,8 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import { Link } from 'react-router-dom';
 
 const Library = props => {
   return (
@@ -28,6 +29,15 @@ const Library = props => {
             </Grid>
           </Grid>
         </Paper>
+      </Grid>
+      <Grid item xs={12}>
+        <Button component={Link} to={"/albums"} fullWidth style={{ backgroundColor: '#2c0093', padding: 16 }}>
+          <Grid container justify={'center'} alignItems={'center'}>
+            <Grid item xs={12}>
+              <Typography style={{ color: '#aeaeae' }}>Albums</Typography>
+            </Grid>
+          </Grid>
+        </Button>
       </Grid>
     </Grid>
   );

@@ -83,10 +83,14 @@ app.use(passport.initialize());
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const groupListeningRoutes = require('./routes/groupListeningRoutes');
+const searchRoutes = require('./routes/searchRoutes');
+const musicRoutes = require('./routes/musicRoutes');
 
 app.use('/auth', authRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/gl-rooms', groupListeningRoutes);
+app.use('/api/search', searchRoutes);
+app.use('/api/music', musicRoutes);
 
 const PORT = process.env.PORT || 8090;
 

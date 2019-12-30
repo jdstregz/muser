@@ -9,5 +9,6 @@ const GroupListeningController = require('../controllers/GroupListeningControlle
 
 router.post('/create', jwtRequired, GroupListeningController.createGroupListeningRoom);
 router.get('/:id', jwtRequired, GroupListeningController.getGroupListeningRoomById);
-
+router.get('/me/rooms', jwtRequired, GroupListeningController.getMyGroupListeningRooms);
+router.get('/public/rooms', jwtRequired, GroupListeningController.getPublicGroupListeningRooms);
 module.exports = router;

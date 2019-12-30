@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const GroupListeningRoom = mongoose.model('GroupListeningRoom');
+const GroupListeningRoomMember = mongoose.model('GroupListeningRoomMember')
 
 const logger = require('../config/winston');
 
@@ -13,12 +14,17 @@ exports.createGroupListeningRoom = async (req, res) => {
         message: 'Bad Request'
       });
     }
+    const member = new GroupListeningRoomMember({
+      userId: req.user._id,
+      username: req.user.username
+    });
     const GLRoom = new GroupListeningRoom({
       title: req.body.title,
       owner: req.user._id,
       description: req.body.description,
       public: req.body.public,
       passcode: req.body.passcode || null,
+      users: [member],
     });
     await GLRoom.save();
     return res.send(GLRoom);
@@ -71,5 +77,39 @@ exports.getGroupListeningRoomById = async (req, res) => {
     return res.status(500).send({
       message: "An error occurred when trying to find a room by id"
     })
+  }
+};
+
+exports.getMyGroupListeningRooms = async (req, res) => {
+  try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).send({
+        message: 'Unauthorized'
+      });
+    }
+    const myRooms = await GroupListeningRoom.find({owner: req.user._id});
+    return res.send(myRooms);
+  } catch (err) {
+    logger.error(err);
+    return res.status(500).send({
+      message: 'An error occurred when trying to find user rooms'
+    });
+  }
+};
+
+exports.getPublicGroupListeningRooms = async (req, res) => {
+  try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).send({
+        message: 'Unauthorized'
+      });
+    }
+    const publicRooms = await GroupListeningRoom.find({public: true, owner: {$ne: req.user._id}});
+    return res.send(publicRooms);
+  } catch (err) {
+    logger.error(err);
+    return res.status(500).send({
+      message: 'An error occurred when getting all public rooms'
+    });
   }
 };

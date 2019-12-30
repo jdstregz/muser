@@ -9,7 +9,8 @@ const GroupListeningRoomMemberSchema = new Schema({
 
 const MessageSchema = new Schema({
   userId: {type: Schema.Types.ObjectId, ref: 'User'},
-  message: String,
+  userName: String,
+  contents: String,
 }, {timestamps: true});
 
 const GroupListeningRoomSchema = new Schema({

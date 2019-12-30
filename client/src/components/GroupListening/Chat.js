@@ -6,7 +6,9 @@ import useStayScrolled from 'react-stay-scrolled';
 
 
 const Chat = props => {
-  const {socket} = props;
+  const {socket, getUsers, auth} = props;
+  const [users, setUsers] = React.useState([]);
+  const [socketCreated, setSocketCreated] = React.useState(false);
   const divRef = React.useRef();
   const {stayScrolled} = useStayScrolled(divRef);
   const [messages, setMessages] = React.useState([]);
@@ -18,33 +20,42 @@ const Chat = props => {
   }, [messages.length]);
 
   React.useEffect(() => {
-    socket.on('receiveMessage', (data) => {
-      const newMessages = messages;
-      newMessages.push(data);
-      setMessages(newMessages);
-      setLastReceived(data);
-    })
-  }, [messages, socket])
+    console.log('creating socket');
+    if (!socketCreated) {
+      setSocketCreated(true);
+      socket.on('receiveMessage', (data) => {
+        messages.push(data);
+        setMessages(messages);
+        setLastReceived(data);
+      });
+      socket.on('allUsers', (data) => {
+        const allUsers = data.users;
+        setUsers(allUsers);
+        console.log(allUsers);
+      });
+
+    }
+    setUsers(getUsers());
+  }, []);
 
   const sendMessage = () => {
-    const newMessages = messages;
-    newMessages.push({contents: currentMessage});
-    setMessages(newMessages);
-    socket.emit('sendMessage', {contents: currentMessage});
-    setLastReceived({contents: currentMessage});
-    console.log(messages)
+    const message = {user: auth.username, contents: currentMessage};
+    messages.push(message);
+    setMessages(messages);
+    socket.emit('sendMessage', message);
+    setLastReceived({user: auth.username, contents: currentMessage});
     setCurrentMessage('');
   };
 
   return (
     <Paper style={{backgroundColor: '#2f3463', padding: 8, height: '100%', maxHeight: 500}}>
-      <Grid container spacing={1} justify={'center'} alignItems={'center'}>
+      <Grid container spacing={1} justify={'center'} alignItems={'flex-start'}>
         <Grid item xs={12}>
           <Typography style={{color: '#fff'}}>
             Chat {socket ? "Connected" : "Loading"}
           </Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={10}>
           <div style={{
             width: '100%',
             minHeight: 200,
@@ -54,13 +65,24 @@ const Chat = props => {
           }}
                ref={divRef}
           >
-            {messages.map((message, index) => (
+
+            {messages ? messages.map((message, index) => (
               <Typography key={index} style={{color: '#fff'}}>
-                {lastReceived ? message.contents : null}
+                {message.user}: {lastReceived ? message.contents : null}
               </Typography>
-            ))}
+            )) : null}
 
           </div>
+        </Grid>
+        <Grid item xs={2}>
+          <Typography style={{color: '#fff'}}>
+            Connected Users:
+          </Typography>
+          {users.map(user => (
+            <Typography style={{fontSize: 12, color: '#fff'}}>
+              {user}
+            </Typography>
+          ))}
         </Grid>
         <Grid item xs={10}>
           <TextField

@@ -10,9 +10,10 @@ import Queue from './Queue';
 
 const GLRoom = props => {
   const [room, setRoom] = React.useState(null);
-  const {socket} = props;
+  const {socket, auth} = props;
   const location = useLocation();
-
+  const [users, setUsers] = React.useState([]);
+  const [blah, setBlah] = React.useState('');
   React.useEffect(() => {
     const query = new URLSearchParams(location.search);
     const id = query.get('id');
@@ -21,11 +22,23 @@ const GLRoom = props => {
         setRoom(data);
       });
       if (config && config.api && config.api.url && socket) {
-        socket.emit('joinGLRoom', {id});
+        socket.on('userJoined', (data) => {
+          const user = data.user;
+          users.push(user);
+          setUsers(users);
+          setBlah(user);
+        });
+        socket.on('allUsers', (data) => {
+          const allUsers = data.users;
+          setUsers(allUsers);
+          console.log(allUsers);
+          setBlah('reset');
+        });
+        socket.emit('joinGLRoom', {id, user: auth.username});
+
       }
     }
   }, [socket]);
-
 
 
   if (!room) {
@@ -48,7 +61,7 @@ const GLRoom = props => {
         <Queue/>
       </Grid>
       <Grid item xs={12}>
-        <Chat socket={socket}/>
+        <Chat getUsers={() => {return users }} socket={socket} auth={auth}/>
       </Grid>
     </Grid>
   )
@@ -57,6 +70,7 @@ const GLRoom = props => {
 const mapStateToProps = (state) => {
   return {
     socket: state.socket,
+    auth: state.auth
   }
 };
 
