@@ -67,11 +67,11 @@ exports.getGroupListeningRoomById = async (req, res) => {
     }
     if (isOwnerOfRoom(req.user, room) || isMemberOfRoom(req.user, room)) {
       return res.send(room);
-    } else {
+    } 
       return res.status(401).send({
         message: "Unauthorized to access this room"
       })
-    }
+    
   } catch (err) {
     logger.error(err);
     return res.status(500).send({

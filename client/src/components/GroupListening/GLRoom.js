@@ -38,7 +38,7 @@ const GLRoom = props => {
 
       }
     }
-  }, [socket]);
+  }, [auth.username, location.search, socket, users]);
 
 
   if (!room) {

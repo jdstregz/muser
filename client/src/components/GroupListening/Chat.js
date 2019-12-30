@@ -17,7 +17,7 @@ const Chat = props => {
 
   React.useLayoutEffect(() => {
     stayScrolled();
-  }, [messages.length]);
+  }, [messages.length, stayScrolled]);
 
   React.useEffect(() => {
     console.log('creating socket');
@@ -36,7 +36,7 @@ const Chat = props => {
 
     }
     setUsers(getUsers());
-  }, []);
+  }, [getUsers, messages, socket, socketCreated]);
 
   const sendMessage = () => {
     const message = {user: auth.username, contents: currentMessage};

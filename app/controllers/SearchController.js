@@ -1,6 +1,6 @@
 const axios = require('axios');
-const logger = require('../config/winston');
 const jwt = require('jsonwebtoken');
+const logger = require('../config/winston');
 
 exports.searchSpotify = async (req, res) => {
   try {
@@ -15,19 +15,19 @@ exports.searchSpotify = async (req, res) => {
         return res.status(401).send({
           message: 'Unauthorized'
         });
-      } else {
-        const {data} = await axios.get('https://api.spotify.com/v1/search' +
-          '?q=' + encodeURI(req.params.search) +
-          "&type=album,track,artist", {
+      } 
+        const {data} = await axios.get(`${'https://api.spotify.com/v1/search' +
+          '?q='}${  encodeURI(req.params.search) 
+          }&type=album,track,artist`, {
           headers: {
             Authorization: `Bearer ${decodedToken.accessToken}`,
           },
         });
 
         return res.send(data);
-      }
+      
     });
-    //return res.send([]);
+    // return res.send([]);
   } catch (err) {
     logger.error(err)
     return res.status(500).send({

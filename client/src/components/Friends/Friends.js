@@ -29,7 +29,7 @@ const Friends = props => {
   React.useEffect(() => {
     fetchSession();
     getUserFriends();
-  }, [fetchSession]);
+  }, [fetchSession, getUserFriends]);
 
   const searchForUsers = async username => {
     setFriendSearch(username);

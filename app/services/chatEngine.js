@@ -1,11 +1,10 @@
 const io = require('socket.io');
 const logger = require('../config/winston');
-const mongoose = require('mongoose');
 
-const getAllUsernamesInRoom = (io, room) => {
+const getAllUsernamesInRoom = (ioSocket, room) => {
   try {
-    return Object.keys(io.sockets.adapter.rooms[room].sockets).map((socket) => {
-      return io.sockets.connected[socket].user
+    return Object.keys(ioSocket.sockets.adapter.rooms[room].sockets).map((socket) => {
+      return ioSocket.sockets.connected[socket].user
     });
   } catch (err) {
     logger.error(err);
@@ -26,14 +25,13 @@ module.exports = server => {
       client.room = data.id;
       client.user = data.user;
       logger.info('userJoined');
-      //chatSocket.in(data.id).emit('userJoined', {user: data.user});
+      // chatSocket.in(data.id).emit('userJoined', {user: data.user});
       const allUsers = getAllUsernamesInRoom(chatSocket, data.id)
       chatSocket.in(data.id).emit('allUsers', {users: allUsers});
     });
 
     client.on('sendMessage', data => {
       if (client.room) {
-        console.log("Sending message: " + data);
         client.to(client.room).emit('receiveMessage', data);
       }
     })

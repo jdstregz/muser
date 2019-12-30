@@ -57,7 +57,7 @@ const Dash = props => {
     getOutgoingFriendRequests();
     getIncomingFriendRequests();
     socketConnect();
-  }, [getIncomingFriendRequests, getOutgoingFriendRequests]);
+  }, [getIncomingFriendRequests, getOutgoingFriendRequests, socketConnect]);
 
   const profileMenu = (
     <Menu

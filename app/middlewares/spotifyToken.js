@@ -6,8 +6,8 @@ module.exports.middleware = (req, res, next) => {
       return res.status(401).send({
         message: 'Unauthorized'
       });
-    } else {
+    } 
       req.spotifyTokens = decodedToken;
       next();
-    }});
+    });
 };
