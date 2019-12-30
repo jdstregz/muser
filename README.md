@@ -15,7 +15,3 @@ Work in progress...
 - Backup features
 - Dropbox suggestion Feature
 - Friend Feature
-
-FXQaTPNd2tNK
-ny2-ldb-004
-3001
