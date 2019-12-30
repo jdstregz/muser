@@ -23,6 +23,7 @@ import GroupListeningLanding from '../GroupListening/GroupListeningLanding';
 import CreateGLRoom from '../GroupListening/CreateGLRoom';
 import GLRoom from '../GroupListening/GLRoom';
 import Albums from '../Library/Albums';
+import Playlists from "../Library/Playlists";
 
 const Routes = () => {
   return {
@@ -118,6 +119,13 @@ const Routes = () => {
       render: () => <Albums/>,
       hide: true,
       description: "Showing all user saved Albums"
+    },
+    Playlists: {
+      text: 'Albums',
+      link: '/playlists',
+      render: () => <Playlists/>,
+      hide: true,
+      description: "Showing all user playlists"
     }
   };
 };

@@ -8,5 +8,6 @@ const spotifyTokenRequired = require('../middlewares/spotifyToken');
 
 const router = express.Router();
 router.get('/albums', [jwtRequired, spotifyTokenRequired.middleware], MusicController.getAllUserAlbums)
+router.get('/playlists', [jwtRequired, spotifyTokenRequired.middleware], MusicController.getAllUserPlaylists);
 
 module.exports = router;

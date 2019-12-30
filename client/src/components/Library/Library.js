@@ -39,6 +39,15 @@ const Library = props => {
           </Grid>
         </Button>
       </Grid>
+        <Grid item xs={12}>
+            <Button component={Link} to={"/playlists"} fullWidth style={{ backgroundColor: '#228f93', padding: 16 }}>
+                <Grid container justify={'center'} alignItems={'center'}>
+                    <Grid item xs={12}>
+                        <Typography style={{ color: '#aeaeae' }}>Playlists</Typography>
+                    </Grid>
+                </Grid>
+            </Button>
+        </Grid>
     </Grid>
   );
 };
