@@ -13,7 +13,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@material-ui/core';
-import { AccountCircle, Menu as MenuIcon } from '@material-ui/icons';
+import { AccountCircle, Menu as MenuIcon, Cancel } from '@material-ui/icons';
 import { destroySession } from '../../actions/authActions';
 import logo from '../../assets/MuserIcon.png';
 import DashDrawer from './DashDrawer';
@@ -118,9 +118,9 @@ const Dash = props => {
             <IconButton
               color={'inherit'}
               className={classes.menuButton}
-              onClick={() => setDrawerOpen(true)}
+              onClick={() => setDrawerOpen(!drawerOpen)}
             >
-              <MenuIcon />
+              {drawerOpen ? <Cancel/> : <MenuIcon />}
             </IconButton>
           ) : null}
           <img alt={'logo'} src={logo} className={classes.logo} />
