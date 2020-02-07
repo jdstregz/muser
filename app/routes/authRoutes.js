@@ -67,8 +67,10 @@ const generateRandomString = length => {
 
 router.get('/spotify/login', (req, res) => {
   let scope = 'user-read-private user-read-email streaming user-read-playback-state ';
-  scope += 'user-modify-playback-state user-library-read user-library-modify playlist-read-private ' +
-      'playlist-read-collaborative';
+  scope +=
+    'user-modify-playback-state user-library-read user-library-modify ' +
+    'playlist-read-private ' +
+    'playlist-read-collaborative';
   const state = generateRandomString(16);
   req.session.state = state;
   res.redirect(
@@ -78,6 +80,7 @@ router.get('/spotify/login', (req, res) => {
       scope,
       redirect_uri: process.env.MUSER_REDIRECT_URI,
       state,
+      show_dialog: true,
     })}`,
   );
 });

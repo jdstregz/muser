@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography, Button } from '@material-ui/core';
+import { Grid, Typography, Button, List, ListItem } from '@material-ui/core';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ const Albums = props => {
   React.useEffect(() => {
     axios.get('/api/music/albums').then(({ data }) => {
       setAlbums(data);
-      console.log(data);
+      setRequested(false);
     });
   }, []);
 
@@ -26,7 +26,24 @@ const Albums = props => {
           Albums
         </Typography>
       </Grid>
-      <Grid item xs={12}></Grid>
+      <Grid item xs={12}>
+        <List style={{ backgroundColor: '#fff', padding: 16 }}>
+          {albums.map(({ album }) => (
+            <ListItem>
+              <Grid container spacing={1} justify={'center'} alignItems={'center'}>
+                <Grid item xs={6}>
+                  <Typography>{album.name}</Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <Typography>
+                    {album.artists && album.artists.length > 0 ? album.artists[0].name : null}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </ListItem>
+          ))}
+        </List>
+      </Grid>
     </Grid>
   );
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Typography } from '@material-ui/core';
+import Backup from '../Utilities/Backup';
 
 const DashboardPage = props => {
   return (
@@ -8,6 +9,9 @@ const DashboardPage = props => {
         <Typography variant={'h5'} style={{ color: '#fff' }}>
           Dashboard
         </Typography>
+      </Grid>
+      <Grid item xs={6}>
+        <Backup />
       </Grid>
     </Grid>
   );
