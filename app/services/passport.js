@@ -23,7 +23,7 @@ passport.use(
     async (req, username, password, done) => {
       try {
         if (process.env.NODE_ENV === 'production') {
-          // for the sake of a personal project, i don't want random users on this
+          // for the sake of a personal project, i don't want random users on this right now
           return done(null, false, { message: 'Unauthorized' });
         }
         const existingUser = await User.findOne({ username });

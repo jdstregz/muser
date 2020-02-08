@@ -29,7 +29,7 @@ const Routes = () => {
   return {
     dashboard: {
       text: 'Dashboard',
-      link: '/dashboard',
+      link: '/',
       icon: <Dashboard />,
       render: () => <DashboardPage />,
       description: 'Dashboard for quick profile view and feeds',

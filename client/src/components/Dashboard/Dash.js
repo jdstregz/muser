@@ -112,7 +112,7 @@ const Dash = props => {
 
   return (
     <div className={classes.root}>
-      <AppBar position={'fixed'} className={classes.appBar} color={'secondary'}>
+      <AppBar position={'fixed'} className={classes.appBarClass} color={'secondary'}>
         <Toolbar>
           {mobile ? (
             <IconButton
