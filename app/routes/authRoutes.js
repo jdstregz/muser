@@ -90,6 +90,9 @@ router.get('/spotify/callback', (req, res) => {
   const state = req.query.state || null;
   const storedState = req.session.state || null;
   if (state === null || state !== storedState) {
+    logger.info(`state mismatch`);
+    logger.info(state);
+    logger.info(storedState);
     res.status(401).send({
       message: 'An error occured during spotify authentication. Please do it properly next time.',
     });
