@@ -202,8 +202,9 @@ const LoginPage = props => {
                   variant={'outlined'}
                   error={validations.confirmPassword != null}
                   value={confirmPassword}
-                  label={'ConfirmPassword'}
+                  label={'Confirm Password'}
                   onChange={event => setConfirmPassword(event.target.value)}
+                  type={'password'}
                 />
               ) : null}
               {signup ? (
