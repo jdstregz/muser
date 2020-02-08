@@ -4,9 +4,6 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
-  appBarClass: {
-    zIndex: 1400,
-  },
   title: {
     flex: 1,
   },

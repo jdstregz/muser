@@ -3,6 +3,9 @@ import responsiveFontSizes from '@material-ui/core/styles/responsiveFontSizes';
 
 const theme = responsiveFontSizes(
   createMuiTheme({
+    zIndex: {
+      appBar:1400
+    },
     palette: {
       primary: {
         lightest: '#dff7ff',
