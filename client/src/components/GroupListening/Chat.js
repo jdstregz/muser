@@ -21,7 +21,7 @@ const Chat = props => {
 
   React.useEffect(() => {
     console.log('creating socket');
-    if (!socketCreated) {
+    if (!socketCreated && socket) {
       setSocketCreated(true);
       socket.on('receiveMessage', (data) => {
         messages.push(data);

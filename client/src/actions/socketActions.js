@@ -6,5 +6,7 @@ export const socketConnect = () => async dispatch => {
   if (config && config.api && config.api.url) {
     const socket = socketIO.connect(config.api.url);
     dispatch({ type: CREATE_SOCKET, payload: socket });
+  } else {
+    console.log("Socket not connected")
   }
 };
