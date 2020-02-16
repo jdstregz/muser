@@ -93,9 +93,7 @@ router.get('/spotify/callback', (req, res) => {
     logger.info(`state mismatch`);
     logger.info(state);
     logger.info(storedState);
-    res.status(401).send({
-      message: 'An error occured during spotify authentication. Please do it properly next time.',
-    });
+    res.redirect('/');
   } else {
     req.session.state = null;
     const clientId = process.env.MUSER_CLIENT_ID;

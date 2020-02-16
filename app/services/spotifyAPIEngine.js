@@ -27,7 +27,9 @@ exports.getAllUserAlbumIDs = async accessToken => {
   const albums = await getAllUserAlbums(accessToken);
   const albumIDs = [];
   albums.forEach(({ album }) => {
-    albumIDs.push(album.id);
+    if (album && album.id) {
+      albumIDs.push(album.id);
+    }
   });
   return albumIDs;
 };
