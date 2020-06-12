@@ -22,4 +22,9 @@ router.get(
   [jwtRequired, spotifyTokenRequired.middleware],
   MusicController.getBackUpOfUsersData,
 );
+router.get(
+  '/songs',
+  [jwtRequired, spotifyTokenRequired.middleware],
+  MusicController.getAllUserSongs,
+);
 module.exports = router;

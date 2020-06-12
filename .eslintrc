@@ -23,6 +23,7 @@
     "react/jsx-props-no-spreading": ["warn"],
     "new-cap": "off",
     "no-await-in-loop": "warn",
-    "no-restricted-syntax": "off"
+    "no-restricted-syntax": "off",
+    "no-param-reassign": "off"
   }
 }

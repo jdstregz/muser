@@ -11,7 +11,7 @@ import { SnackbarProvider } from 'notistack';
 import { Helmet } from 'react-helmet';
 import config from './config/config';
 
-const App = props => {
+const App = (props) => {
   const { fetchSession, fetchSpotifySession } = props;
 
   useEffect(() => {

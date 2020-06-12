@@ -1,6 +1,6 @@
-import { DESTROY_SESSION, FETCH_SPOTIFY_SESSION } from '../actions/types';
+import { DESTROY_SESSION, FETCH_SPOTIFY_SESSION, SET_SONG_LIST } from '../actions/types';
 
-export default function(state = {}, action) {
+export default function (state = {}, action) {
   switch (action.type) {
     case FETCH_SPOTIFY_SESSION:
       return Object.assign({}, state, {
@@ -8,6 +8,10 @@ export default function(state = {}, action) {
       });
     case DESTROY_SESSION:
       return false;
+    case SET_SONG_LIST:
+      return Object.assign({}, state, {
+        songs: action.payload || [],
+      });
     default:
       return state;
   }

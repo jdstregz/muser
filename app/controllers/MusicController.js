@@ -25,7 +25,8 @@ exports.getAllUserSongs = async (req, res) => {
         message: 'No spotify token',
       });
     }
-    return null;
+    const songs = await SpotifyEngine.getAllUserSongs(req.spotifyTokens.accessToken);
+    return res.send(songs);
   } catch (err) {
     logger.error(err);
     return res.status(500).send({

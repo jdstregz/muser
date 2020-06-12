@@ -2,6 +2,8 @@ export const FETCH_SESSION = 'fetch_session';
 export const DESTROY_SESSION = 'destroy_session';
 export const FETCH_SPOTIFY_SESSION = 'fetch_spotify_session';
 
+export const SET_SONG_LIST = 'set_song_list';
+
 export const CREATE_SOCKET = 'create_socket';
 
 export const FETCH_USER_FRIENDS = 'fetch_user_friends';

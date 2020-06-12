@@ -4,7 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { Link } from 'react-router-dom';
 
-const Library = props => {
+const Library = (props) => {
   return (
     <Grid container spacing={1} justify={'center'} alignItems={'center'}>
       <Grid item xs={12}>
@@ -12,42 +12,48 @@ const Library = props => {
           Library
         </Typography>
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <Paper style={{ backgroundColor: '#25006c', padding: 16 }}>
-          <Grid container justify={'center'} alignItems={'center'}>
-            <Grid item xs={12}>
-              <Typography style={{ color: '#9c9c9c' }}>Saved Songs</Typography>
-            </Grid>
-          </Grid>
-        </Paper>
-      </Grid>
-      <Grid item xs={12} sm={6}>
-        <Paper style={{ backgroundColor: '#2c0093', padding: 16 }}>
-          <Grid container justify={'center'} alignItems={'center'}>
-            <Grid item xs={12}>
-              <Typography style={{ color: '#aeaeae' }}>Playlists</Typography>
-            </Grid>
-          </Grid>
-        </Paper>
-      </Grid>
       <Grid item xs={12}>
-        <Button component={Link} to={"/albums"} fullWidth style={{ backgroundColor: '#2c0093', padding: 16 }}>
+        <Button
+          fullWidth
+          component={Link}
+          to={'/saved-songs'}
+          style={{ backgroundColor: '#25006c', padding: 16 }}
+        >
           <Grid container justify={'center'} alignItems={'center'}>
             <Grid item xs={12}>
-              <Typography style={{ color: '#aeaeae' }}>Albums</Typography>
+              <Typography style={{ color: '#e2e2e2' }}>Saved Songs</Typography>
             </Grid>
           </Grid>
         </Button>
       </Grid>
-        <Grid item xs={12}>
-            <Button component={Link} to={"/playlists"} fullWidth style={{ backgroundColor: '#228f93', padding: 16 }}>
-                <Grid container justify={'center'} alignItems={'center'}>
-                    <Grid item xs={12}>
-                        <Typography style={{ color: '#aeaeae' }}>Playlists</Typography>
-                    </Grid>
-                </Grid>
-            </Button>
-        </Grid>
+      <Grid item xs={12}>
+        <Button
+          component={Link}
+          to={'/albums'}
+          fullWidth
+          style={{ backgroundColor: '#2c0093', padding: 16 }}
+        >
+          <Grid container justify={'center'} alignItems={'center'}>
+            <Grid item xs={12}>
+              <Typography style={{ color: '#e2e2e2' }}>Albums</Typography>
+            </Grid>
+          </Grid>
+        </Button>
+      </Grid>
+      <Grid item xs={12}>
+        <Button
+          component={Link}
+          to={'/playlists'}
+          fullWidth
+          style={{ backgroundColor: '#228f93', padding: 16 }}
+        >
+          <Grid container justify={'center'} alignItems={'center'}>
+            <Grid item xs={12}>
+              <Typography style={{ color: '#e2e2e2' }}>Playlists</Typography>
+            </Grid>
+          </Grid>
+        </Button>
+      </Grid>
     </Grid>
   );
 };

@@ -1,7 +1,7 @@
 const axios = require('axios');
 const logger = require('../config/winston');
 
-const getAllUserAlbums = async accessToken => {
+const getAllUserAlbums = async (accessToken) => {
   try {
     let albums = [];
     let url = 'https://api.spotify.com/v1/me/albums?limit=50';
@@ -23,7 +23,7 @@ const getAllUserAlbums = async accessToken => {
 
 exports.getAllUserAlbums = getAllUserAlbums;
 
-exports.getAllUserAlbumIDs = async accessToken => {
+exports.getAllUserAlbumIDs = async (accessToken) => {
   const albums = await getAllUserAlbums(accessToken);
   const albumIDs = [];
   albums.forEach(({ album }) => {
@@ -34,7 +34,7 @@ exports.getAllUserAlbumIDs = async accessToken => {
   return albumIDs;
 };
 
-const getAllUserSongs = async accessToken => {
+const getAllUserSongs = async (accessToken) => {
   let songs = [];
   let url = 'https://api.spotify.com/v1/me/tracks?limit=50';
   while (url != null) {
@@ -51,7 +51,7 @@ const getAllUserSongs = async accessToken => {
 
 exports.getAllUserSongs = getAllUserSongs;
 
-exports.getAllUserSongIds = async accessToken => {
+exports.getAllUserSongIds = async (accessToken) => {
   const songs = await getAllUserSongs(accessToken);
   const songIDs = [];
   songs.forEach(({ track }) => {
@@ -60,7 +60,7 @@ exports.getAllUserSongIds = async accessToken => {
   return songIDs;
 };
 
-exports.getAllUserPlaylistsAndTracks = async accessToken => {
+exports.getAllUserPlaylistsAndTracks = async (accessToken) => {
   logger.info('Getting all use playlists');
   let playlists = [];
   let url = 'https://api.spotify.com/v1/me/playlists?limit=50';
@@ -94,9 +94,5 @@ exports.getAllUserPlaylistsAndTracks = async accessToken => {
     }
     playlist.tracks = tracks;
   }
-
   return playlists;
 };
-
-// 1,368.84
-// 1,110.46

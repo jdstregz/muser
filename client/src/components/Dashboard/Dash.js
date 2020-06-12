@@ -18,31 +18,26 @@ import { destroySession } from '../../actions/authActions';
 import logo from '../../assets/MuserIcon.png';
 import DashDrawer from './DashDrawer';
 import DashRoutes from './DashRoutes';
+import SpotifyPlayer from '../Player/SpotifyPlayer';
 import { Link } from 'react-router-dom';
 import config from '../../config/config';
-import SpotifyWebPlayer from 'react-spotify-web-playback';
 import { getIncomingFriendRequests, getOutgoingFriendRequests } from '../../actions/userActions';
-import {socketConnect} from '../../actions/socketActions';
+import { socketConnect } from '../../actions/socketActions';
+import { useLocation } from 'react-router';
 
-const Dash = props => {
+const Dash = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const {
-    destroySession,
-    history,
-    spotify,
-    requests,
-    getIncomingFriendRequests,
-    getOutgoingFriendRequests,
-    socketConnect
-  } = props;
+  const { destroySession, history, spotify } = props;
+  const location = useLocation();
   const isMenuOpen = Boolean(anchorEl);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [player, setPlayer] = React.useState(null);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('xs'));
 
   const classes = useStyles();
 
-  const handleProfileMenuOpen = event => {
+  const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleMenuClose = () => {
@@ -52,12 +47,6 @@ const Dash = props => {
   const handleLogout = () => {
     destroySession(history);
   };
-
-  React.useEffect(() => {
-    getOutgoingFriendRequests();
-    getIncomingFriendRequests();
-    socketConnect();
-  }, [getIncomingFriendRequests, getOutgoingFriendRequests, socketConnect]);
 
   const profileMenu = (
     <Menu
@@ -81,35 +70,6 @@ const Dash = props => {
     }
   }
 
-  const playerCallback = state => {
-    console.log(state);
-  };
-
-  const runSpotifyPlayer = () => {
-    if (spotify && spotify.spotifySessionActive && spotify.spotifySessionActive.token) {
-      return (
-        <SpotifyWebPlayer
-          token={spotify.spotifySessionActive.token}
-          styles={{
-            bgColor: '#0e103a',
-            trackNameColor: '#fff',
-            trackArtistColor: '#d2d2d2',
-            savedColor: '#e52ac9',
-            sliderColor: '#28c0c9',
-            sliderHandleColor: '#fbba48',
-            sliderTrackColor: '#9b9b9b',
-            color: '#fff',
-          }}
-          showSaveIcon={true}
-          magnifySliderOnHover={true}
-          persistDeviceSelection={true}
-          name={'Muser Player'}
-          callback={playerCallback}
-        />
-      );
-    }
-  };
-
   return (
     <div className={classes.root}>
       <AppBar position={'fixed'} className={classes.appBarClass} color={'secondary'}>
@@ -120,7 +80,7 @@ const Dash = props => {
               className={classes.menuButton}
               onClick={() => setDrawerOpen(!drawerOpen)}
             >
-              {drawerOpen ? <Cancel/> : <MenuIcon />}
+              {drawerOpen ? <Cancel /> : <MenuIcon />}
             </IconButton>
           ) : null}
           <img alt={'logo'} src={logo} className={classes.logo} />
@@ -136,7 +96,9 @@ const Dash = props => {
         <div className={classes.toolbar} />
         <DashRoutes />
       </main>
-      <div className={classes.player}>{runSpotifyPlayer()}</div>
+      <div className={classes.player}>
+        <SpotifyPlayer />
+      </div>
     </div>
   );
 };

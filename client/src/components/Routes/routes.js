@@ -23,7 +23,8 @@ import GroupListeningLanding from '../GroupListening/GroupListeningLanding';
 import CreateGLRoom from '../GroupListening/CreateGLRoom';
 import GLRoom from '../GroupListening/GLRoom';
 import Albums from '../Library/Albums';
-import Playlists from "../Library/Playlists";
+import Playlists from '../Library/Playlists';
+import SavedSongs from '../Library/SavedSongs';
 
 const Routes = () => {
   return {
@@ -64,7 +65,7 @@ const Routes = () => {
         groupListening: {
           text: 'Group Listening',
           link: '/group-listening',
-          render: () => <GroupListeningLanding/>,
+          render: () => <GroupListeningLanding />,
           icon: <Queue />,
           description: 'Group listening feature',
         },
@@ -102,31 +103,38 @@ const Routes = () => {
     createGLRoom: {
       text: 'CreateGLRoom,',
       link: '/create-gl-room',
-      render: () => <CreateGLRoom/>,
+      render: () => <CreateGLRoom />,
       hide: true,
-      description: 'Page to create a group listening room'
+      description: 'Page to create a group listening room',
     },
     GLRoom: {
       text: 'GLRoom',
       link: '/gl-room',
-      render: () => <GLRoom/>,
+      render: () => <GLRoom />,
       hide: true,
-      description: 'Page to do the group listening'
+      description: 'Page to do the group listening',
     },
     Albums: {
       text: 'Albums',
       link: '/albums',
-      render: () => <Albums/>,
+      render: () => <Albums />,
       hide: true,
-      description: "Showing all user saved Albums"
+      description: 'Showing all user saved Albums',
     },
     Playlists: {
-      text: 'Albums',
+      text: 'Playlists',
       link: '/playlists',
-      render: () => <Playlists/>,
+      render: () => <Playlists />,
       hide: true,
-      description: "Showing all user playlists"
-    }
+      description: 'Showing all user playlists',
+    },
+    SavedSongs: {
+      text: 'Saved Songs',
+      link: '/saved-songs',
+      render: () => <SavedSongs />,
+      hide: true,
+      description: 'Showing all user saved songs',
+    },
   };
 };
 export default Routes;
