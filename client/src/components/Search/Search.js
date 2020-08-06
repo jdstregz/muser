@@ -1,11 +1,11 @@
 import React from 'react';
-import { Grid, Button, IconButton } from '@material-ui/core';
+import { Grid, IconButton } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { CircularProgress } from '@material-ui/core';
 
-const Search = props => {
+const Search = (props) => {
   const [search, setSearch] = React.useState('');
   const [searching, setSearching] = React.useState(false);
 
@@ -27,11 +27,12 @@ const Search = props => {
       <Grid item xs={8}>
         <div style={{ marginRight: 16 }}>
           <TextField
-            onKeyPress={ev => {
+            onKeyPress={(ev) => {
               if (ev.key === 'Enter') {
                 performSearch();
               }
             }}
+            value={search}
             InputProps={{
               inputProps: {
                 style: {
@@ -41,7 +42,7 @@ const Search = props => {
             }}
             variant={'filled'}
             fullWidth
-            onChange={event => setSearch(event.target.value)}
+            onChange={(event) => setSearch(event.target.value)}
           />
         </div>
       </Grid>

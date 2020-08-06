@@ -10,6 +10,7 @@
     "axios": "^0.19.2",
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
+    "fast-average-color": "^6.0.2",
     "http-proxy-middleware": "^1.0.4",
     "material-table": "^1.60.0",
     "notistack": "^0.9.16",

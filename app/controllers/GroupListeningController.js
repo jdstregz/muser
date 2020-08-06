@@ -1,82 +1,142 @@
 const mongoose = require('mongoose');
 
 const GroupListeningRoom = mongoose.model('GroupListeningRoom');
-const GroupListeningRoomMember = mongoose.model('GroupListeningRoomMember')
+const GroupListeningRoomSession = mongoose.model('GroupListeningRoomSession');
 
 const logger = require('../config/winston');
 
-exports.createGroupListeningRoom = async (req, res) => {
+exports.createGroupListeningRoom = async (
+  userId,
+  { roomName, description, passcode, privateSetting },
+) => {
   try {
-    if (!req.user || !req.user._id ||
-      req.body.title === null || req.body.description === null
-    || req.body.public === null) {
-      return res.status(400).send({
-        message: 'Bad Request'
-      });
+    // first check to see if the user already has a room, prevent multiple creations
+    let room = await GroupListeningRoom.findOne({ userId });
+    if (room) {
+      return false;
     }
-    const member = new GroupListeningRoomMember({
-      userId: req.user._id,
-      username: req.user.username
+    room = new GroupListeningRoom({
+      private: privateSetting,
+      passcode,
+      description,
+      userId,
+      roomName,
+      settings: 0,
+      members: {},
     });
-    const GLRoom = new GroupListeningRoom({
-      title: req.body.title,
-      owner: req.user._id,
-      description: req.body.description,
-      public: req.body.public,
-      passcode: req.body.passcode || null,
-      users: [member],
-    });
-    await GLRoom.save();
-    return res.send(GLRoom);
+    await room.save();
+    return room;
   } catch (err) {
     logger.error(err);
-    return res.status(500).send({
-      message: 'An error occurred when trying to create a new group listening room'
-    })
+    return false;
   }
 };
 
-const isOwnerOfRoom = (user, room) => {
-  return user._id.toString() === room.owner.toString();
-};
-
-const isMemberOfRoom = (user, room) => {
-  for (const member of room.users) {
-    if (member.userId.toString() === user._id.toString()) {
-      return true;
-    }
-  }
-  return false;
-}
-
-exports.getGroupListeningRoomById = async (req, res) => {
+exports.getAllGroupListeningRooms = async (userId) => {
   try {
-    if (!req.user || !req.user._id || !req.params.id) {
-      return res.status(400).send({
-        message: "Bad Request"
-      })
-    }
-    const room = await GroupListeningRoom.findOne({_id: req.params.id});
-    if (!room) {
-      return res.status(404).send({
-        message: "Room not found"
-      });
-    }
-    if (room.public) {
-      return res.send(room);
-    }
-    if (isOwnerOfRoom(req.user, room) || isMemberOfRoom(req.user, room)) {
-      return res.send(room);
-    } 
-      return res.status(401).send({
-        message: "Unauthorized to access this room"
-      })
-    
+    return await GroupListeningRoom.find({ $or: [{ private: false }, { userId }] });
   } catch (err) {
     logger.error(err);
-    return res.status(500).send({
-      message: "An error occurred when trying to find a room by id"
-    })
+    return [];
+  }
+};
+
+exports.addUserToGLRoomList = async (room, userId, username) => {
+  try {
+    room.members[userId] = username;
+    await room.save();
+    return true;
+  } catch (err) {
+    logger.error(err);
+    return false;
+  }
+};
+
+exports.removeUserToGLRoomList = async (room, userId) => {
+  try {
+    room.members[userId] = false;
+    await room.save();
+    return true;
+  } catch (err) {
+    logger.error(err);
+    return false;
+  }
+};
+
+exports.getLastGroupListeningSession = async (userId) => {
+  try {
+    if (!userId) {
+      return null;
+    }
+    return await GroupListeningRoomSession.findOne({ userId });
+  } catch (err) {
+    logger.error(err);
+    return false;
+  }
+};
+
+exports.setLastGroupListeningSession = async (userId, roomId, roomName) => {
+  try {
+    if (!userId) {
+      return null;
+    }
+
+    let roomSession = await GroupListeningRoomSession.findOne({ userId });
+    if (!roomSession) {
+      // then we create one
+      roomSession = new GroupListeningRoomSession({
+        userId,
+        roomId,
+        roomName,
+      });
+      await roomSession.save();
+      return roomSession;
+    }
+    // then we update
+    roomSession.roomId = roomId;
+    roomSession.roomName = roomName;
+    await roomSession.save();
+    return roomSession;
+  } catch (err) {
+    return false;
+  }
+};
+
+exports.deleteGroupListeningSession = async (userId) => {
+  try {
+    await GroupListeningRoomSession.deleteOne({ userId });
+    return true;
+  } catch (err) {
+    logger.error(err);
+    return false;
+  }
+};
+
+exports.deleteGroupListeningRoom = async (userId) => {
+  try {
+    await GroupListeningRoom.deleteOne({ userId });
+    return true;
+  } catch (err) {
+    logger.error(err);
+    return false;
+  }
+};
+
+exports.socketgetGLRoom = async (id) => {
+  try {
+    const room = await GroupListeningRoom.findOne({ _id: id });
+    return room;
+  } catch (err) {
+    return null;
+  }
+};
+
+exports.getGLRoomByOwner = async (userId) => {
+  try {
+    return await GroupListeningRoom.findOne({ userId });
+  } catch (err) {
+    logger.error(err);
+    return null;
   }
 };
 
@@ -84,15 +144,15 @@ exports.getMyGroupListeningRooms = async (req, res) => {
   try {
     if (!req.user || !req.user._id) {
       return res.status(401).send({
-        message: 'Unauthorized'
+        message: 'Unauthorized',
       });
     }
-    const myRooms = await GroupListeningRoom.find({owner: req.user._id});
-    return res.send(myRooms);
+    const room = await GroupListeningRoom.findOne({ userId: req.user._id });
+    return res.send(room);
   } catch (err) {
     logger.error(err);
     return res.status(500).send({
-      message: 'An error occurred when trying to find user rooms'
+      message: 'An error occurred when trying to find user rooms',
     });
   }
 };
@@ -101,15 +161,18 @@ exports.getPublicGroupListeningRooms = async (req, res) => {
   try {
     if (!req.user || !req.user._id) {
       return res.status(401).send({
-        message: 'Unauthorized'
+        message: 'Unauthorized',
       });
     }
-    const publicRooms = await GroupListeningRoom.find({public: true, owner: {$ne: req.user._id}});
+    const publicRooms = await GroupListeningRoom.find({
+      private: false,
+      userId: { $ne: req.user._id },
+    });
     return res.send(publicRooms);
   } catch (err) {
     logger.error(err);
     return res.status(500).send({
-      message: 'An error occurred when getting all public rooms'
+      message: 'An error occurred when getting all public rooms',
     });
   }
 };

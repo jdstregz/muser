@@ -19,7 +19,7 @@ import { useLocation } from 'react-router-dom';
 
 const routeArray = Object.values(routes());
 
-const DashDrawer = props => {
+const DashDrawer = (props) => {
   const { drawerOpen, setDrawerOpen } = props;
   const [selectedRouteIndex, setSelectedRouteIndex] = React.useState(-1);
   const [selectedSubrouteIndex, setSelectedSubrouteIndex] = React.useState(-1);
@@ -49,30 +49,37 @@ const DashDrawer = props => {
     return (
       <Collapse in={selectedRouteIndex === parentMenuIndex} timeout={'auto'} unmountOnExit>
         <List component={'div'} disablePadding>
-          {Object.values(route.subroutes).map((subroute, index) => (
-            <Tooltip
-              title={subroute.text}
-              key={subroute.text}
-              classes={{ tooltip: classes.tooltipText, popper: classes.noShow }}
-              placement={'right'}
-            >
-              <ListItem
-                selected={selectedRouteIndex === parentMenuIndex && selectedSubrouteIndex === index}
+          {Object.values(route.subroutes).map((subroute, index) => {
+            if (subroute.hide) {
+              return null;
+            }
+            return (
+              <Tooltip
+                title={subroute.text}
                 key={subroute.text}
-                onClick={() => {
-                  setSelectedSubrouteIndex(index);
-                  setSelectedRouteIndex(parentMenuIndex);
-                }}
-                button
-                component={Link}
-                to={subroute.link}
-                className={classes.sublistItem}
+                classes={{ tooltip: classes.tooltipText, popper: classes.noShow }}
+                placement={'right'}
               >
-                <ListItemIcon className={classes.sidebarIcon}>{subroute.icon}</ListItemIcon>
-                <ListItemText className={classes.sidebarText} primary={subroute.text} />
-              </ListItem>
-            </Tooltip>
-          ))}
+                <ListItem
+                  selected={
+                    selectedRouteIndex === parentMenuIndex && selectedSubrouteIndex === index
+                  }
+                  key={subroute.text}
+                  onClick={() => {
+                    setSelectedSubrouteIndex(index);
+                    setSelectedRouteIndex(parentMenuIndex);
+                  }}
+                  button
+                  component={Link}
+                  to={subroute.link}
+                  className={classes.sublistItem}
+                >
+                  <ListItemIcon className={classes.sidebarIcon}>{subroute.icon}</ListItemIcon>
+                  <ListItemText className={classes.sidebarText} primary={subroute.text} />
+                </ListItem>
+              </Tooltip>
+            );
+          })}
         </List>
       </Collapse>
     );
@@ -103,29 +110,30 @@ const DashDrawer = props => {
             return null;
           }
           return (
-          <div key={route.text}>
-            <Tooltip
-              title={route.text}
-              placement={'right'}
-              classes={{ tooltip: classes.tooltipText, popper: classes.noShow }}
-            >
-              <ListItem
-                button
-                selected={selectedRouteIndex === index}
-                component={Link}
-                to={route.link}
-                onClick={() => {
-                  setSelectedRouteIndex(index);
-                  setSelectedSubrouteIndex(-1);
-                }}
+            <div key={route.text}>
+              <Tooltip
+                title={route.text}
+                placement={'right'}
+                classes={{ tooltip: classes.tooltipText, popper: classes.noShow }}
               >
-                <ListItemIcon className={classes.sidebarIcon}>{route.icon}</ListItemIcon>
-                <ListItemText className={classes.sidebarText} primary={route.text} />
-              </ListItem>
-            </Tooltip>
-            {route.subroutes ? renderSublist(route, index) : null}
-          </div>
-        )})}
+                <ListItem
+                  button
+                  selected={selectedRouteIndex === index}
+                  component={Link}
+                  to={route.link}
+                  onClick={() => {
+                    setSelectedRouteIndex(index);
+                    setSelectedSubrouteIndex(-1);
+                  }}
+                >
+                  <ListItemIcon className={classes.sidebarIcon}>{route.icon}</ListItemIcon>
+                  <ListItemText className={classes.sidebarText} primary={route.text} />
+                </ListItem>
+              </Tooltip>
+              {route.subroutes ? renderSublist(route, index) : null}
+            </div>
+          );
+        })}
       </List>
     </Drawer>
   );

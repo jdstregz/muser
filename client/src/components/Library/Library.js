@@ -1,7 +1,6 @@
 import React from 'react';
 import { Grid, Button } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import { Link } from 'react-router-dom';
 
 const Library = (props) => {

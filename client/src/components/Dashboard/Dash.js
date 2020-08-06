@@ -22,16 +22,12 @@ import SpotifyPlayer from '../Player/SpotifyPlayer';
 import { Link } from 'react-router-dom';
 import config from '../../config/config';
 import { getIncomingFriendRequests, getOutgoingFriendRequests } from '../../actions/userActions';
-import { socketConnect } from '../../actions/socketActions';
-import { useLocation } from 'react-router';
 
 const Dash = (props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { destroySession, history, spotify } = props;
-  const location = useLocation();
+  const { destroySession, history, spotify, socket } = props;
   const isMenuOpen = Boolean(anchorEl);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [player, setPlayer] = React.useState(null);
   const theme = useTheme();
   const mobile = useMediaQuery(theme.breakpoints.down('xs'));
 
@@ -68,6 +64,10 @@ const Dash = (props) => {
       history.push('/spotify-login');
       return null;
     }
+  }
+
+  if (!socket) {
+    return <div>Loading</div>;
   }
 
   return (
@@ -108,6 +108,7 @@ function mapStateToProps(state) {
     auth: state.auth,
     spotify: state.spotify,
     requests: state.requests,
+    socket: state.socket,
   };
 }
 
@@ -115,5 +116,4 @@ export default connect(mapStateToProps, {
   destroySession,
   getIncomingFriendRequests,
   getOutgoingFriendRequests,
-  socketConnect,
 })(withRouter(SecuredRoute(Dash)));

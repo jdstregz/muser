@@ -46,6 +46,16 @@ router.get('/current-session', (req, res) => {
   });
 });
 
+router.get('/current_token', (req, res) => {
+  jwt.verify(req.session.jwt, process.env.JWT_SECRET_KEY, (err, decodedToken) => {
+    if (err || !decodedToken) {
+      res.send(null);
+    } else {
+      res.send(req.session.jwt);
+    }
+  });
+});
+
 router.get('/logout', (req, res) => {
   req.session = null;
   res.send('Successfully logged out.');
@@ -55,7 +65,7 @@ router.get('/secure-route', jwtRequired, (req, res) => {
   res.send({ message: 'You have reached the protected endpoint' });
 });
 
-const generateRandomString = length => {
+const generateRandomString = (length) => {
   let text = '';
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -117,6 +127,7 @@ router.get('/spotify/callback', (req, res) => {
         const spotifyAccess = {
           accessToken: body.access_token,
           refreshToken: body.refresh_token,
+          updatedAt: Date.now(),
         };
         req.session.spotifyJWT = jwt.sign(spotifyAccess, process.env.JWT_SECRET_KEY);
         res.redirect('/');
@@ -143,12 +154,71 @@ router.get('/current-spotify-session', async (req, res) => {
         });
         res.send({
           token: decodedToken.accessToken,
+          updatedAt: decodedToken.updatedAt,
           ...data,
         });
       } catch (error) {
         logger.error(error);
         res.send(false);
       }
+    }
+  });
+});
+
+router.get('/refresh-token', async (req, res) => {
+  jwt.verify(req.session.spotifyJWT, process.env.JWT_SECRET_KEY, async (err, decodedToken) => {
+    if (err || !decodedToken) {
+      return res.send(false);
+    }
+    try {
+      const clientId = process.env.MUSER_CLIENT_ID;
+      const secret = process.env.MUSER_SECRET;
+      const basicHeader = new Buffer.from(`${clientId}:${secret}`).toString('base64');
+      const authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        form: {
+          refresh_token: decodedToken.refreshToken,
+          grant_type: 'refresh_token',
+        },
+        headers: {
+          Authorization: `Basic ${basicHeader}`,
+        },
+        json: true,
+      };
+
+      return request.post(authOptions, async (error, response, body) => {
+        try {
+          if (!error && response.statusCode === 200) {
+            const updatedAt = Date.now();
+            const spotifyAccess = {
+              accessToken: body.access_token,
+              refreshToken: decodedToken.refreshToken,
+              updatedAt,
+            };
+            req.session.spotifyJWT = jwt.sign(spotifyAccess, process.env.JWT_SECRET_KEY);
+            const { data } = await axios.get('https://api.spotify.com/v1/me', {
+              headers: {
+                Authorization: `Bearer ${body.access_token}`,
+              },
+            });
+            return res.send({
+              token: body.access_token,
+              updatedAt,
+              ...data,
+            });
+          }
+          logger.error(error);
+          return res.status(500).send({
+            message: 'an error occurred',
+          });
+        } catch (error1) {
+          logger.error(error1);
+          return res.send(false);
+        }
+      });
+    } catch (error2) {
+      logger.error(error2);
+      return res.send(false);
     }
   });
 });

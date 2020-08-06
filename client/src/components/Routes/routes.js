@@ -20,11 +20,11 @@ import Library from '../Library/Library';
 import SearchPage from '../Search/Search';
 import DashboardPage from '../Dashboard/DashboardPage';
 import GroupListeningLanding from '../GroupListening/GroupListeningLanding';
-import CreateGLRoom from '../GroupListening/CreateGLRoom';
-import GLRoom from '../GroupListening/GLRoom';
 import Albums from '../Library/Albums';
 import Playlists from '../Library/Playlists';
 import SavedSongs from '../Library/SavedSongs';
+import GroupListeningRoom from '../GroupListening/GroupListeningRoom';
+import MuseToolsLanding from '../Library/MuseToolsLanding';
 
 const Routes = () => {
   return {
@@ -41,6 +41,7 @@ const Routes = () => {
       icon: <LibraryMusic />,
       description: 'Muse Tools',
       index: 1,
+      render: () => <MuseToolsLanding />,
       subroutes: {
         library: {
           text: 'Library',
@@ -68,6 +69,13 @@ const Routes = () => {
           render: () => <GroupListeningLanding />,
           icon: <Queue />,
           description: 'Group listening feature',
+        },
+        GroupListeningRoom: {
+          exact: false,
+          hide: true,
+          link: '/gl-room',
+          render: () => <GroupListeningRoom />,
+          description: 'A room for a group listening party',
         },
       },
     },
@@ -100,20 +108,6 @@ const Routes = () => {
       description: 'About page',
     },
     /////////////// HIDDEN ROUTES (NON-SIDEBAR-ROUTES)
-    createGLRoom: {
-      text: 'CreateGLRoom,',
-      link: '/create-gl-room',
-      render: () => <CreateGLRoom />,
-      hide: true,
-      description: 'Page to create a group listening room',
-    },
-    GLRoom: {
-      text: 'GLRoom',
-      link: '/gl-room',
-      render: () => <GLRoom />,
-      hide: true,
-      description: 'Page to do the group listening',
-    },
     Albums: {
       text: 'Albums',
       link: '/albums',

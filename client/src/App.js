@@ -7,17 +7,61 @@ import theme from './themes/theme';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import LoginPage from './components/Auth/LoginPage';
 import Dash from './components/Dashboard/Dash';
+import { initializeSocket, initializeSocketListeners } from './services/socket';
 import { SnackbarProvider } from 'notistack';
 import { Helmet } from 'react-helmet';
 import config from './config/config';
+import useInterval from './components/Utilities/useInterval';
 
 const App = (props) => {
-  const { fetchSession, fetchSpotifySession } = props;
+  const [tokenCheckInterval, setTokenCheckInterval] = React.useState(null);
+  const {
+    fetchSession,
+    fetchSpotifySession,
+    spotify,
+    initializeSocket,
+    initializeSocketListeners,
+    socket,
+  } = props;
+
+  useInterval(() => {
+    const { token, updatedAt } = spotify.spotifySessionActive;
+    console.log(`Current token: ${token}`);
+    let timeLeft = Math.floor((3600000 - (Date.now() - updatedAt)) / 60000);
+    console.log(`${timeLeft} minutes left`);
+  }, tokenCheckInterval);
+
+  useEffect(() => {
+    console.log('initializing socket listeners');
+    //initializeSocketListeners();
+    initializeSocket().then(() => {
+      console.log('Socket Initialized');
+    });
+  }, [initializeSocket]);
+
+  useEffect(() => {
+    if (socket) {
+      initializeSocketListeners(socket);
+    }
+  }, [socket, initializeSocketListeners]);
 
   useEffect(() => {
     fetchSession();
     fetchSpotifySession();
-  }, [fetchSpotifySession, fetchSession]);
+  }, [fetchSession, fetchSpotifySession]);
+
+  useEffect(() => {
+    if (spotify && spotify.spotifySessionActive) {
+      const { token } = spotify.spotifySessionActive;
+      if (token) {
+        setTokenCheckInterval(900000);
+      } else {
+        setTokenCheckInterval(null);
+      }
+    } else {
+      setTokenCheckInterval(null);
+    }
+  }, [spotify]);
 
   return (
     <div>
@@ -55,6 +99,8 @@ const App = (props) => {
 function mapStateToProps(state) {
   return {
     auth: state.auth,
+    spotify: state.spotify,
+    socket: state.socket,
   };
 }
 
@@ -63,4 +109,9 @@ App.propTypes = {
   fetchSession: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps, { fetchSession, fetchSpotifySession })(App);
+export default connect(mapStateToProps, {
+  fetchSession,
+  fetchSpotifySession,
+  initializeSocket,
+  initializeSocketListeners,
+})(App);

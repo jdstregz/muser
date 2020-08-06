@@ -2,29 +2,37 @@ const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
-const GroupListeningRoomMemberSchema = new Schema({
-  userId: {type: Schema.Types.ObjectId, ref: 'User'},
-  username: String,
-});
+module.exports.EVERYONE_CONTROL_SETTINGS = 0;
+module.exports.OWNER_CONTROL_SETTINGS = 1;
+module.exports.EVERYONE_QUEUE_SETTINGS = 2;
 
-const MessageSchema = new Schema({
-  userId: {type: Schema.Types.ObjectId, ref: 'User'},
-  userName: String,
-  contents: String,
-}, {timestamps: true});
-
-const GroupListeningRoomSchema = new Schema({
-  owner: { type: Schema.Types.ObjectId, ref: 'User' },
-  title: String,
-  description: String,
-  passcode: String,
-  users: [GroupListeningRoomMemberSchema],
-  public: Boolean,
-  messages: [MessageSchema],
-},
-{ timestamps: true }
+const GroupListeningRoomSchema = new Schema(
+  {
+    userId: { type: Schema.Types.ObjectId, ref: 'User' },
+    roomName: String,
+    description: String,
+    passcode: String,
+    private: Boolean,
+    settings: Number,
+    members: { type: Map, of: String },
+  },
+  { timestamps: true },
 );
 
-mongoose.model('Message', MessageSchema);
-mongoose.model('GroupListeningRoomMember', GroupListeningRoomMemberSchema);
+const GroupListeningRoomSessionSchema = new Schema(
+  {
+    userId: { type: Schema.Types.ObjectId, ref: 'User' },
+    roomId: String,
+    roomName: String,
+  },
+  { timestamps: true },
+);
+
+GroupListeningRoomSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  delete obj.passcode;
+  return obj;
+};
+
+mongoose.model('GroupListeningRoomSession', GroupListeningRoomSessionSchema);
 mongoose.model('GroupListeningRoom', GroupListeningRoomSchema);

@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Grid, Typography, ListItem, ListItemText, Paper } from '@material-ui/core';
+import React from 'react';
+import { Grid, Typography, ListItem } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { FixedSizeList as List } from 'react-window';
 import useStyles from './styles/styles';

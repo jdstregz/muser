@@ -3,11 +3,11 @@ import { Route } from 'react-router';
 import routes from '../Routes/routes';
 
 const DashRoutes = () => {
-  const renderSubroutes = subroutes => {
+  const renderSubroutes = (subroutes) => {
     if (subroutes) {
       return (
         <div>
-          {Object.values(subroutes).map(subroute => {
+          {Object.values(subroutes).map((subroute) => {
             return (
               <Route key={subroute.text} exact path={subroute.link} render={subroute.render} />
             );
@@ -22,10 +22,14 @@ const DashRoutes = () => {
 
   return (
     <div>
-      {routeArray.map(route => {
+      {routeArray.map((route) => {
         return (
           <div key={route.text}>
-            <Route exact path={route.link} render={route.render} />
+            <Route
+              exact={route.exact != null ? route.exact : true}
+              path={route.link}
+              render={route.render}
+            />
             {renderSubroutes(route.subroutes)}
           </div>
         );

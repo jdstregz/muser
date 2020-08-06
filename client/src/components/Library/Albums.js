@@ -3,7 +3,7 @@ import { Grid, Typography, Button, List, ListItem } from '@material-ui/core';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-const Albums = props => {
+const Albums = (props) => {
   const [albums, setAlbums] = React.useState([]);
   const [requested, setRequested] = React.useState(true);
 
@@ -13,6 +13,10 @@ const Albums = props => {
       setRequested(false);
     });
   }, []);
+
+  if (requested) {
+    return <div>Loading</div>;
+  }
 
   return (
     <Grid container spacing={1} justify={'center'} alignItems={'center'}>
